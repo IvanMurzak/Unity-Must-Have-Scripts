@@ -2,12 +2,20 @@ using System.ComponentModel;
 
 // Auto generated code
 
-public enum BuildingScenes
+
+namespace Game.Package
 {
-[Description("aaa")]
-aaa,
+	[System.Serializable]
+	public enum BuildingScenes
+	{
+		[Description("SceneLoadingExample")]
+		SceneLoadingExample,
 
-[Description("qqqq111")]
-qqqq111,
+		[Description("TriggerExample")]
+		TriggerExample,
 
+		[Description("AsyncLoadingScene")]
+		AsyncLoadingScene,
+
+	}
 }

@@ -6,12 +6,11 @@ namespace Game.Package
 {
     public class SceneLoader : MonoBehaviour
     {
-        private const string LOADING_SCENE_NAME = "AsyncLoadingScene";
-
         public BuildingScenes scene;
         public UnityEvent preLoading, onLoading;
 
         public float delay = 0;
+        public bool loadAsync = false;
         public bool showLoading = false;
 
         public void Load()
@@ -33,12 +32,29 @@ namespace Game.Package
         private void ExecuteLoading(BuildingScenes scene, bool showLoading)
         {
             if (onLoading != null) onLoading.Invoke();
-            string sceneName = showLoading ? LOADING_SCENE_NAME : EnumExtantions.GetDescription(scene);
+            DestroyOldData();
 
+            string sceneName;
+            if (showLoading)
+            {
+                GamePackageSettings gamePackageSettings = GamePackageSettings.Load();
+                BuildingScenes loadingScene = gamePackageSettings.loadingScene;
+                sceneName = EnumExtantions.GetDescription(loadingScene);
+
+                gameObject.Log("Creating middle gameObject");
+                GameObject middleGameObject = new GameObject("LoadingMiddleObject");
+                gameObject.Log("Adding Loading component");
+                middleGameObject.AddComponent<Loading>().Scene = scene;
+            }
+            else sceneName = EnumExtantions.GetDescription(scene);
+
+            gameObject.Log("Loading scene:" + sceneName);
 #if UNITY_5_3
-            UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
+            if (loadAsync) UnityEngine.SceneManagement.SceneManager.LoadSceneAsync(sceneName);
+            else UnityEngine.SceneManagement.SceneManager.LoadScene(sceneName);
 #else
-        Application.LoadLevel(sceneName);
+            if (loadAsync) Application.LoadLevelAsync(sceneName);
+            else Application.LoadLevel(sceneName);
 #endif
         }
 
