@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using Com.LuisPedroFonseca.ProCamera2D;
 using UnityEngine.SceneManagement;
 
 public class SceneLoader : MonoBehaviour
