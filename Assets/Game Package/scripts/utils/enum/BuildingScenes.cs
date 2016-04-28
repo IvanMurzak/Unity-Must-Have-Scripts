@@ -17,5 +17,14 @@ namespace Game.Package
 		[Description("AsyncLoadingScene")]
 		AsyncLoadingScene,
 
+		[Description("AnimationExample")]
+		AnimationExample,
+
+		[Description("AudioExample")]
+		AudioExample,
+
+		[Description("KillerExample")]
+		KillerExample,
+
 	}
 }

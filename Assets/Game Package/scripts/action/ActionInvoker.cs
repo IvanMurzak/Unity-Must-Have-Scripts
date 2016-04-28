@@ -6,7 +6,6 @@ namespace Game.Package
 {
     public class ActionInvoker : MonoBehaviour
     {
-
         public UnityEvent todo;
 
         public float invokeDelay = 0;
@@ -20,7 +19,7 @@ namespace Game.Package
             ValidateUtils.Validate(gameObject, todo);
         }
 
-        void Update()
+        private void Update()
         {
             if (invokeNOW)
             {
@@ -28,7 +27,7 @@ namespace Game.Package
             }
         }
 
-        public void Invoke()
+        public virtual void Invoke()
         {
             invokeNOW = false;
             if (invokeOnce && wasDone) return;
