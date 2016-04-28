@@ -45,7 +45,7 @@ namespace Game.Package
                 if (scene.enabled)
                 {
                     string name = scene.path.Substring(scene.path.LastIndexOf('/') + 1);
-                    name = name.Substring(0, name.Length - 6);
+                    name = name.Substring(0, name.Length - ".unity".Length);
                     temp.Add(name);
                 }
             }

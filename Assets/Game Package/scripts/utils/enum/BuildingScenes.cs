@@ -8,23 +8,23 @@ namespace Game.Package
 	[System.Serializable]
 	public enum BuildingScenes
 	{
-		[Description("SceneLoadingExample")]
-		SceneLoadingExample,
+		[Description("ExampleSceneLoading")]
+		ExampleSceneLoading,
 
-		[Description("TriggerExample")]
-		TriggerExample,
+		[Description("ExampleTrigger")]
+		ExampleTrigger,
 
 		[Description("AsyncLoadingScene")]
 		AsyncLoadingScene,
 
-		[Description("AnimationExample")]
-		AnimationExample,
+		[Description("ExampleAnimation")]
+		ExampleAnimation,
 
-		[Description("AudioExample")]
-		AudioExample,
+		[Description("ExampleAudio")]
+		ExampleAudio,
 
-		[Description("KillerExample")]
-		KillerExample,
+		[Description("ExampleKiller")]
+		ExampleKiller,
 
 	}
 }
