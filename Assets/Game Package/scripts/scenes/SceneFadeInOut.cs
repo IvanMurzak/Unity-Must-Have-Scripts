@@ -1,10 +1,10 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 using UnityEngine.Events;
 
 namespace Game.Package
 {
-    [RequireComponent(typeof(GUITexture))]
+    [RequireComponent(typeof(Canvas))]
     public class SceneFadeInOut : MonoBehaviour
     {
         private const float MIN_DIF = 0.005f;
@@ -14,37 +14,48 @@ namespace Game.Package
         public UnityEvent onFadeBegin = new UnityEvent(), onFadeComplete = new UnityEvent();
 
         private bool IsFading = false;      // Whether or not the scene is still fading in.
-        private new GUITexture guiTexture;
+        private Canvas canvas;
+        private Image image;
         private Color targetColor = Color.clear;
 
-        public Color CurrentColor { get { return guiTexture.color; } }
+        public Color CurrentColor { get { return image.color; } }
 
         protected void Awake()
         {
-            guiTexture = GetComponent<GUITexture>();
-            guiTexture.pixelInset = new Rect(0f, 0f, Screen.width, Screen.height);
-            guiTexture.texture = Texture2D.whiteTexture;
-            guiTexture.enabled = IsVisible();
+            canvas = GetComponent<Canvas>();
+            canvas.renderMode = RenderMode.ScreenSpaceOverlay;
+            canvas.sortingOrder = 32767;
+
+            image = new GameObject("FadeSpace").AddComponent<Image>();
+            image.sprite = Sprite.Create(Texture2D.whiteTexture, new Rect(0,0,1,1), new Vector2(0.5f, 0.5f));
+            image.gameObject.transform.SetParent(transform);
+            image.rectTransform.anchorMin = Vector2.zero;
+            image.rectTransform.anchorMax = Vector2.one;
+            image.rectTransform.pivot = new Vector2(0.5f, 0.5f);
+            image.rectTransform.offsetMax = Vector2.zero;
+            image.rectTransform.offsetMin = Vector2.zero;
+            image.raycastTarget = false;
+            image.enabled = IsVisible();
         }
         
         protected void Update()
         {
             if (IsFading)
             {
-                guiTexture.color = Color.Lerp(guiTexture.color, targetColor, fadeSpeed * Time.deltaTime);
-                Color dif = guiTexture.color - targetColor;
+                image.color = Color.Lerp(image.color, targetColor, fadeSpeed * Time.deltaTime);
+                Color dif = image.color - targetColor;
                 if (Mathf.Abs(dif.a) < MIN_DIF && Mathf.Abs(dif.r) < MIN_DIF && Mathf.Abs(dif.g) < MIN_DIF && Mathf.Abs(dif.b) < MIN_DIF)
                 {
                     IsFading = false;
                     if (onFadeComplete != null) onFadeComplete.Invoke();
                 }
             }
-            guiTexture.enabled = IsVisible();
+            image.enabled = IsVisible();
         }
 
         public bool IsVisible()
         {
-            return guiTexture.color.a >= MIN_DIF;
+            return image.color.a >= MIN_DIF;
         }
 
         public void FadeToColor(Color color)
@@ -72,7 +83,7 @@ namespace Game.Package
 
         public void ForceSetColor(Color color)
         {
-            guiTexture.color = color;
+            image.color = color;
             targetColor = color;
         }
     }
